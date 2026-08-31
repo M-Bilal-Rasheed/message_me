@@ -9,6 +9,7 @@ import path from "path"
 import job from "./lib/cron.js"
 import clerkWebhook from "./webhooks/clerk.webhook.js"
 import authRoutes from "./routes/auth.route.js"
+import messageroutes from "./routes/message.route.js"
 
 const app = express()
 const PORT = process.env.PORT
@@ -20,12 +21,13 @@ app.use("/api/webhooks/clerk", express.raw({type: "application/json"}),clerkWebh
 app.use(express.json())
 app.use(cors({origin: FRONTEND_URL , credentials:true}))
 app.use(clerkMiddleware())
+app.use("/api/auth",authRoutes)
+app.use("/api/messages",messageroutes)
 
 app.get("/health",(req,res)=>{
     res.status(200).json({ok:true});
 })
 
-app.use("/api/auth",authRoutes)
 
 if(fs.existsSync(publicDir)){
     app.use(express.static(publicDir)); 
