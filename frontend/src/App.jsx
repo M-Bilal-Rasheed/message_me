@@ -10,7 +10,7 @@ function App() {
 
  const { isSignedIn , isLoaded } = useAuth();
 
- if(!isLoaded) return <div>Loading...</div>
+ if(!isLoaded) return <PageLoader/>
   return (
     <ThemeProvider>
       <WallpaperProvider>
