@@ -6,11 +6,27 @@ import { Routes, Route } from 'react-router-dom';
 import ChatPage from './pages/ChatPage';
 import AuthPage from './pages/AuthPage';  
 import {useAuth} from "@clerk/react"
+import { useAuthStore } from './store/authStore';
+import { Navigate } from 'react-router-dom';
+import PageLoader from './components/common/PageLoader';
+import { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 function App() {
 
  const { isSignedIn , isLoaded } = useAuth();
 
- if(!isLoaded) return <PageLoader/>
+ const {checkAuth,clearAuth,isCheckingAuth} = useAuthStore();
+
+ useEffect(() => {
+  if(!isLoaded) return;
+  if(isSignedIn) {
+    checkAuth();
+  } else {
+    clearAuth();
+  }
+},[checkAuth,clearAuth,isSignedIn,isLoaded])
+
+ if(!isLoaded || (isSignedIn && isCheckingAuth )) return <PageLoader/>
   return (
     <ThemeProvider>
       <WallpaperProvider>
@@ -20,6 +36,7 @@ function App() {
           <Route path="/auth" element={!isSignedIn ? <AuthPage /> : <Navigate to="/" replace />} />
           
         </Routes>
+        <Toaster />
       </WallpaperProvider>
     </ThemeProvider>
   )
