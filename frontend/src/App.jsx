@@ -6,9 +6,9 @@ import { Routes, Route } from 'react-router-dom';
 import ChatPage from './pages/ChatPage';
 import AuthPage from './pages/AuthPage';  
 import {useAuth} from "@clerk/react"
-import { useAuthStore } from './store/authStore';
+import { useAuthStore } from './store/useAuthStore';
 import { Navigate } from 'react-router-dom';
-import PageLoader from './components/common/PageLoader';
+import PageLoader from './components/PageLoader';
 import { useEffect } from 'react';
 import { Toaster } from 'react-hot-toast';
 function App() {
